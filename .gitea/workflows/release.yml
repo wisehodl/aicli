@@ -1,0 +1,84 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ssh-key: "${{ secrets.SSH_PRIVATE_KEY }}"
+          ssh-known-hosts: "${{ secrets.SSH_KNOWN_HOST }}"
+
+      # Fetch annotated tags
+      - name: Fetch annotated tags
+        run: |
+          echo "Fetching annotated tag objects from remote..."
+          git fetch --tags --force origin
+
+      # Install go
+      - name: Install go
+        uses: actions/setup-go@v3
+        with:
+          go-version: ">=1.23.5"
+
+      # Get version info
+      - name: Get version info
+        run: |
+          echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+          echo "COMMIT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> $GITHUB_ENV
+          echo "PACKAGE=git.wisehodl.dev/jay/aicli" >> $GITHUB_ENV
+          echo "Release metadata:"
+          echo "  Version: ${GITHUB_REF#refs/tags/}"
+          echo "  Commit: $(git rev-parse --short HEAD)"
+          echo "  Date: $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+
+      # Extract tag message
+      - name: Extract tag message
+        run: |
+          TAG_NAME="${GITHUB_REF#refs/tags/}"
+          echo "Extracting annotation from $TAG_NAME..."
+          echo "TAG_MESSAGE<<EOF" >> $GITHUB_ENV
+          git for-each-ref --format='%(contents)' "refs/tags/${TAG_NAME}" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+          echo "Tag message:"
+          git for-each-ref --format='%(contents)' "refs/tags/${TAG_NAME}"
+
+      # Build binaries
+      - name: Build binaries
+        run: |
+          echo "Building binaries for ${{ env.VERSION }}..."
+          chmod +x ./scripts/build.sh
+          VERSION=${{ env.VERSION }} PACKAGE=${{ env.PACKAGE }} DATE=${{ env.DATE }} COMMIT=${{ env.COMMIT }} ./scripts/build.sh
+
+      # Create release
+      - name: Create Release
+        uses: https://gitea.com/actions/release-action@main
+        with:
+          files: dist/*
+          api_key: "${{ secrets.RELEASE_TOKEN }}"
+          title: "aicli ${{ env.VERSION }}"
+          body: |
+            ## Changelog
+
+            ${{ env.TAG_MESSAGE }}
+
+            ## Installation
+
+            See [INSTALL.md](INSTALL.md) for detailed installation instructions.
+
+            ## Available Downloads
+
+            - Linux (amd64, arm64, 386, armv7, armv6)
+            - macOS (Intel and Apple Silicon)
+            - Windows (64-bit and 32-bit)
+            - FreeBSD, OpenBSD, NetBSD, and Solaris (amd64)

@@ -1,0 +1,15 @@
+# AICLI Sample Configuration
+# Save this file and specify its path with --config flag or AICLI_CONFIG_FILE
+# environment variable
+
+# API Configuration
+protocol: openai # API protocol: openai or ollama
+url: https://api.ppq.ai/chat/completions # API endpoint URL
+key_file: ~/.aicli_key # Path to file containing your API key
+
+# Model Configuration
+model: gpt-4o-mini # Primary model to use
+fallback: gpt-4.1-mini,o3 # Comma-separated fallback models
+
+# Prompt Configuration
+system_file: ~/.aicli_system # Path to file containing system prompt
