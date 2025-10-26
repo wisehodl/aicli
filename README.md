@@ -1,5 +1,9 @@
 # AICLI
 
+Source: https://git.wisehodl.dev/jay/aicli
+
+Mirror: https://github.com/wisehodl/aicli
+
 A flexible command-line interface for interacting with LLM chat APIs.
 
 AICLI provides a streamlined way to interact with language models from your terminal. Send prompts and files to chat models like OpenAI's GPT or local Ollama models, customize system prompts, and receive responses right in your terminal or save them to files.
