@@ -1,0 +1,4 @@
+Focus on:
+- Performance
+- Security
+- Readability

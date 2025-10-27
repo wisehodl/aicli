@@ -1,0 +1,6 @@
+protocol: ollama
+url: http://localhost:11434/api/chat
+key_file: ~/.aicli_key
+model: llama3
+fallback: llama2,mistral
+system_file: ~/system.txt

@@ -22,18 +22,20 @@ AICLI provides a streamlined way to interact with language models from your term
 
 ### Pre-built Binaries
 
-Download the latest binary for your platform from the [Releases](https://git.wisehodl.dev/jay/aicli/releases) page:
+Download the latest binary for your platform from the [Releases](https://git.wisehodl.dev/jay/aicli/releases) page.
 
 Make the file executable (Linux/macOS):
 
 ```bash
 chmod +x aicli-linux-amd64
 mv aicli-linux-amd64 /usr/local/bin/aicli  # or any directory in your PATH
-```
+````
+
+See [INSTALL.md](https://claude.ai/chat/INSTALL.md) for detailed installation instructions.
 
 ### Building from Source
 
-Requires Go 1.16+:
+Requires Go 1.23+:
 
 ```bash
 git clone https://git.wisehodl.dev/jay/aicli.git
@@ -73,7 +75,7 @@ export AICLI_API_KEY_FILE=~/.aicli_key
 export AICLI_API_KEY="your-api-key"
 export AICLI_API_KEY_FILE="~/.aicli_key"
 export AICLI_PROTOCOL="openai"  # or "ollama"
-export AICLI_URL="https://api.ppq.ai/chat/completions"  # custom endpoint
+export AICLI_URL="https://api.ppq.ai/chat/completions"
 
 # Model Selection
 export AICLI_MODEL="gpt-4o-mini"
@@ -242,38 +244,36 @@ grep ERROR /var/log/app.log | aicli -p "Identify patterns in these error logs"
 ## Full Command Reference
 
 ```
-Usage: aicli [OPTION]... [FILE]...
-Send files and prompts to LLM chat endpoints.
-
-With no FILE, or when FILE is -, read standard input.
+Usage: aicli [OPTION]...
+Send prompts and files to LLM chat endpoints.
 
 Global:
-  --version                display version information and exit
+  --version                display version and exit
 
 Input:
   -f, --file PATH          input file (repeatable)
-  -F, --stdin-file         treat stdin as file contents
-  -p, --prompt TEXT        prompt text (repeatable, can be combined with --prompt-file)
-  -pf, --prompt-file PATH  prompt from file (combined with any --prompt flags)
+  -F, --stdin-file         treat stdin as file content
+  -p, --prompt TEXT        prompt text (repeatable)
+  -pf, --prompt-file PATH  read prompt from file
 
 System:
   -s, --system TEXT        system prompt text
-  -sf, --system-file PATH  system prompt from file
+  -sf, --system-file PATH  read system prompt from file
 
 API:
-  -l, --protocol PROTO     API protocol: openai, ollama (default: openai)
-  -u, --url URL            API endpoint (default: https://api.ppq.ai/chat/completions)
-  -k, --key KEY            API key (if present, --key-file is ignored)
-  -kf, --key-file PATH     API key from file (used only if --key is not provided)
+  -l, --protocol PROTO     openai or ollama (default: openai)
+  -u, --url URL            endpoint (default: https://api.ppq.ai/chat/completions)
+  -k, --key KEY            API key
+  -kf, --key-file PATH     read API key from file
 
 Models:
   -m, --model NAME         primary model (default: gpt-4o-mini)
-  -b, --fallback NAMES     comma-separated fallback models (default: gpt-4.1-mini)
+  -b, --fallback NAMES     comma-separated fallback list (default: gpt-4.1-mini)
 
 Output:
   -o, --output PATH        write to file instead of stdout
-  -q, --quiet              suppress progress output
-  -v, --verbose            enable debug logging
+  -q, --quiet              suppress progress messages
+  -v, --verbose            log debug information to stderr
 
 Config:
   -c, --config PATH        YAML config file

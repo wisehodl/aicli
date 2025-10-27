@@ -1,0 +1,4 @@
+protocol: openai
+model: gpt-4
+unknown_field: ignored
+another_unknown: also_ignored

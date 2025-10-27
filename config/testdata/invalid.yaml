@@ -1,0 +1,3 @@
+protocol: openai
+url: [this is not valid yaml syntax
+model: gpt-4

@@ -38,7 +38,7 @@ sudo mv aicli-linux-amd64 /usr/local/bin/aicli
 
 # Verify installation
 aicli --version
-```
+````
 
 ### Windows Installation
 
@@ -46,9 +46,10 @@ aicli --version
 2. Rename the executable to `aicli.exe` if desired
 3. Add the directory to your PATH or move the executable to a directory in your PATH
 4. Open Command Prompt or PowerShell and verify the installation:
-   ```
-   aicli --version
-   ```
+
+```
+aicli --version
+```
 
 ## Configuration
 
@@ -69,14 +70,17 @@ export AICLI_API_KEY_FILE=~/.aicli_key
 
 ### Configuration File
 
-Create a configuration file at `~/.aicli.yaml` or use the sample config provided in the release:
+Create a configuration file at `~/.aicli.yaml` or use the sample config:
 
 ```bash
-# Download the sample config
-curl -LO https://git.wisehodl.dev/jay/aicli/raw/branch/main/sample-config.yml
-
-# Copy to your home directory
-cp sample-config.yml ~/.aicli.yaml
+# Create config file
+cat > ~/.aicli.yaml << 'EOF'
+protocol: openai
+url: https://api.ppq.ai/chat/completions
+key_file: ~/.aicli_key
+model: gpt-4o-mini
+fallback: gpt-4.1-mini,o3
+EOF
 
 # Edit with your preferred editor
 nano ~/.aicli.yaml
@@ -114,4 +118,4 @@ sudo mv aicli /usr/local/bin/
 
 ## Next Steps
 
-See the [README.md](README.md) for usage instructions and examples.
+See the [README.md](https://claude.ai/chat/README.md) for usage instructions and examples.
